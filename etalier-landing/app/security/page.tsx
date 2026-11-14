@@ -1,17 +1,17 @@
+import { pageMetadata } from "@/lib/seo";
 import { SiteHeader, SiteFooter, ContactCTA } from "@/components/SiteChrome";
-export const metadata = {
-  title: "Security & data — Etalier",
+export const metadata = pageMetadata({
+  title: "Security & Data Handling | Etalier",
   description:
-    "How Etalier handles workspace access, private records, uploads and expiring form links, and what your salon should review.",
-  alternates: { canonical: "/security" },
-};
+    "Read how Etalier handles salon access, passwords, sessions, private uploads, intake links and customer data.",
+  path: "/security",
+});
 export default function SecurityPage() {
   return (
     <>
       <SiteHeader />
       <main id="main">
         <section className="editorial-hero">
-          <span className="eyebrow">SECURITY & DATA</span>
           <h1>
             Your workspace.
             <br />
@@ -57,7 +57,6 @@ export default function SecurityPage() {
             ],
           ].map(([title, body, action], i) => (
             <section key={title}>
-              <span className="card-index">0{i + 1}</span>
               <h2>{title}</h2>
               <div>
                 <p>{body}</p>

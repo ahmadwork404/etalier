@@ -57,6 +57,6 @@ The labelled Maison Linden demo salon contains fictional European customers, emp
 
 ## Custom-domain DNS fallback
 
-If a local resolver still caches a missing DNS entry, use https://etalier-landing.etalier-ahmadwork404.workers.dev for the website and https://etalier-portal.etalier-ahmadwork404.workers.dev for the CRM. Both workers.dev routes remain enabled alongside the custom domains. Their origins are explicitly allowed by the API and R2 CORS. The website uses the fallback CRM login link when opened on its workers.dev hostname.
+If a network resolver cannot resolve the domains, use https://etalier-landing.etalier-ahmadwork404.workers.dev for the website and https://etalier-portal.etalier-ahmadwork404.workers.dev for the CRM. Compare the failing resolver with public DNS before changing Cloudflare records. Both workers.dev routes remain enabled alongside the custom domains. Their origins are explicitly allowed by the API and R2 CORS. The website uses the fallback CRM login link when opened on its workers.dev hostname. Preview responses are excluded from search indexing.
 
-The website includes a product overview, four feature pages, About, a journal with four full guides, setup/pricing enquiries, security information, contact, sitemap and robots metadata. Article content is maintained in `etalier-landing/lib/journal.ts`.
+The website includes a product overview, four feature pages, About, a journal with seven guides, setup/pricing enquiries, security information, contact, sitemap and robots metadata. Article content is maintained in `etalier-landing/lib/journal.ts` and `researched-journal.ts`. See `SEO.md` for indexing controls and source research.

@@ -1,13 +1,14 @@
+import { pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Brand, Star } from "../../components/Icons";
 import { SiteHeader, SiteFooter } from "../../components/SiteChrome";
 import { ContactForm } from "../../components/ContactForm";
-export const metadata: Metadata = {
-  title: "Contact us — Etalier",
+export const metadata = pageMetadata({
+  title: "Contact Etalier | Salon Software Walkthrough",
   description:
-    "Ask about Etalier, discuss your salon’s needs, or arrange a walkthrough.",
-  alternates: { canonical: "/contact" },
-};
+    "Ask about Etalier salon management software, discuss your team and locations, or request a product walkthrough.",
+  path: "/contact",
+});
 export default function ContactPage() {
   const portal =
     process.env.NEXT_PUBLIC_APP_URL || "https://portal.etalier.app";
@@ -16,7 +17,6 @@ export default function ContactPage() {
       <SiteHeader />
       <main id="main" className="contact-layout">
         <section className="contact-intro">
-          <span className="eyebrow">LET’S TALK SALON.</span>
           <h1>
             A good day
             <br />
@@ -41,7 +41,6 @@ export default function ContactPage() {
           </a>
         </section>
         <section className="contact-card" aria-labelledby="contact-heading">
-          <span className="eyebrow">YOUR NEXT CHAPTER</span>
           <h2 id="contact-heading">Tell us a little about you.</h2>
           <p>A few details, and we’ll take it from here.</p>
           <ContactForm />

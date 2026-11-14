@@ -1,20 +1,20 @@
+import { pageMetadata } from "@/lib/seo";
 import { SiteHeader, SiteFooter, ContactCTA } from "@/components/SiteChrome";
 import { ProductPreview } from "@/components/ProductPreview";
 import { features } from "@/lib/product";
 import { Icon } from "@/components/Icons";
-export const metadata = {
-  title: "Salon management software — Etalier",
+export const metadata = pageMetadata({
+  title: "Salon Management Software & Features | Etalier",
   description:
-    "Explore Etalier’s front desk, bookings, customer records and team payroll in one connected salon workspace.",
-  alternates: { canonical: "/product" },
-};
+    "Explore salon bookings, walk-ins, customer profiles, intake forms, working hours and payroll in Etalier.",
+  path: "/product",
+});
 export default function ProductPage() {
   return (
     <>
       <SiteHeader />
       <main id="main">
         <section className="editorial-hero centered">
-          <span className="eyebrow">THE ETALIER WORKSPACE</span>
           <h1>
             The whole salon.
             <br />
@@ -29,12 +29,10 @@ export default function ProductPage() {
           </a>
         </section>
         <section className="product-demo-section">
-          <span className="eyebrow">EXPLORE AN ILLUSTRATIVE WORKSPACE</span>
           <ProductPreview />
         </section>
         <section className="editorial-section">
           <div className="section-heading">
-            <span className="eyebrow">FOLLOW THE WORK</span>
             <h2>Four parts of a better-run day.</h2>
           </div>
           <div className="product-page-grid">
@@ -44,9 +42,6 @@ export default function ProductPage() {
                 className={"product-page-card tone-" + f.tone}
                 key={f.slug}
               >
-                <span className="card-index">
-                  {f.number} / {f.tag}
-                </span>
                 <h3>{f.title}</h3>
                 <p>{f.description}</p>
                 <span className="card-link">
@@ -57,7 +52,6 @@ export default function ProductPage() {
           </div>
         </section>
         <section className="connected-strip">
-          <span className="eyebrow">CONNECTIONS THAT COUNT</span>
           <h2>A visit should not need entering three times.</h2>
           <div>
             <p>

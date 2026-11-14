@@ -4,6 +4,8 @@ import { articleBySlug } from "@/lib/journal";
 import { SiteHeader, SiteFooter, ContactCTA } from "@/components/SiteChrome";
 import { WorkflowVisual } from "@/components/WorkflowVisual";
 import { Icon } from "@/components/Icons";
+import { pageMetadata, breadcrumb } from "@/lib/seo";
+import { StructuredData } from "@/components/StructuredData";
 export function generateStaticParams() {
   return features.map((f) => ({ slug: f.slug }));
 }
@@ -14,11 +16,11 @@ export async function generateMetadata({
 }) {
   const f = featureBySlug((await params).slug);
   return f
-    ? {
-        title: f.tag + " — Etalier",
+    ? pageMetadata({
+        title: f.tag + " Software | Etalier",
         description: f.description,
-        alternates: { canonical: "/features/" + f.slug },
-      }
+        path: "/features/" + f.slug,
+      })
     : {};
 }
 export default async function FeaturePage({
@@ -33,6 +35,13 @@ export default async function FeaturePage({
     <>
       <SiteHeader />
       <main id="main">
+        <StructuredData
+          data={breadcrumb([
+            { name: "Home", path: "/" },
+            { name: "Product", path: "/product" },
+            { name: f.tag, path: "/features/" + f.slug },
+          ])}
+        />
         <section className="feature-page-hero">
           <div>
             <a href="/product" className="breadcrumb">
@@ -48,7 +57,6 @@ export default async function FeaturePage({
         </section>
         <section className="editorial-section">
           <div className="section-heading">
-            <span className="eyebrow">HOW IT WORKS</span>
             <h2>
               Clear steps.
               <br />
@@ -69,7 +77,6 @@ export default async function FeaturePage({
         </section>
         <section className="feature-detail-band">
           <div>
-            <span className="eyebrow">THE DETAILS MATTER</span>
             <h2>{f.detailTitle}</h2>
           </div>
           <div>
@@ -86,7 +93,6 @@ export default async function FeaturePage({
         </section>
         {article && (
           <a className="related-feature-article" href={"/blog/" + article.slug}>
-            <span className="eyebrow">FROM THE SALON JOURNAL</span>
             <h3>{article.title}</h3>
             <p>{article.summary}</p>
             <span className="card-link">

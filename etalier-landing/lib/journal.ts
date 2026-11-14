@@ -1,3 +1,4 @@
+import { researchedArticles } from "./researched-journal";
 export type Article = {
   slug: string;
   category: string;
@@ -5,6 +6,9 @@ export type Article = {
   summary: string;
   readTime: string;
   tone: string;
+  publishedAt?: string;
+  modifiedAt?: string;
+  sources?: { title: string; url: string }[];
   sections: {
     id: string;
     title: string;
@@ -14,6 +18,7 @@ export type Article = {
   takeaway: string;
 };
 export const articles: Article[] = [
+  ...researchedArticles,
   {
     slug: "a-cleaner-end-of-day-close",
     category: "Front desk",

@@ -1,18 +1,18 @@
+import { pageMetadata } from "@/lib/seo";
 import { SiteHeader, SiteFooter, ContactCTA } from "@/components/SiteChrome";
 import { Star } from "@/components/Icons";
-export const metadata = {
-  title: "About Etalier — Built around the working salon",
+export const metadata = pageMetadata({
+  title: "About Etalier | Salon Management Software",
   description:
-    "Why Etalier brings the front desk, customer records and team operations into one workspace.",
-  alternates: { canonical: "/about" },
-};
+    "Learn how Etalier connects salon bookings, customer records, payments and team operations in one practical workspace.",
+  path: "/about",
+});
 export default function AboutPage() {
   return (
     <>
       <SiteHeader />
       <main id="main">
         <section className="about-hero">
-          <span className="eyebrow">ABOUT ETALIER</span>
           <h1>
             There’s a whole
             <br />
@@ -32,7 +32,6 @@ export default function AboutPage() {
           </div>
         </section>
         <section className="about-story">
-          <span className="eyebrow">WHAT WE’RE BUILDING</span>
           <div>
             <h2>A clearer place for the work that surrounds the work.</h2>
             <p>
@@ -56,7 +55,6 @@ export default function AboutPage() {
         </section>
         <section className="editorial-section">
           <div className="section-heading">
-            <span className="eyebrow">OUR PRODUCT PRINCIPLES</span>
             <h2>Useful is a design decision.</h2>
           </div>
           <div className="principle-grid">
@@ -86,7 +84,6 @@ export default function AboutPage() {
           </div>
         </section>
         <section className="about-invitation">
-          <span className="eyebrow">A CONVERSATION WITH A REAL WORKFLOW</span>
           <h2>
             Show us the part
             <br />

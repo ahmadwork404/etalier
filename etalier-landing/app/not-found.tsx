@@ -4,7 +4,6 @@ export default function NotFound() {
     <>
       <SiteHeader />
       <main id="main" className="editorial-hero centered missing-page">
-        <span className="eyebrow">404 / NOT ON THE CALENDAR</span>
         <h1>
           This page
           <br />

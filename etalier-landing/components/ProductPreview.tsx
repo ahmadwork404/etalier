@@ -147,7 +147,6 @@ export function ProductPreview() {
             </div>
             <div className="preview-heading">
               <div>
-                <span className="small-eyebrow">A LITTLE ROOM TO BREATHE</span>
                 <h3>
                   {active === "calendar"
                     ? "A good day, all lined up."
@@ -255,7 +254,7 @@ export function ProductPreview() {
                 >
                   <Icon name="close" size={15} />
                 </button>
-                <span className="small-eyebrow">SAMPLE BOOKING</span>
+
                 <h4>{selected.name}</h4>
                 <p>
                   {selected.service} with {selected.stylist}
@@ -313,7 +312,7 @@ function QuickPreview() {
             </select>
           </label>
         )}
-        <span className="small-eyebrow quick-label">WHAT DID WE DO?</span>
+
         <div className="demo-service-list">
           {services.map((service, i) => (
             <button
@@ -346,7 +345,6 @@ function QuickPreview() {
         </p>
       </div>
       <div className="demo-checkout">
-        <span className="small-eyebrow">THE WRAP-UP</span>
         <h4>One lovely visit.</h4>
         <div>
           <span>Services</span>

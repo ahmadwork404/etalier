@@ -6,7 +6,6 @@ export function WorkflowVisual({ kind }: { kind: string }) {
       {kind === "front-desk" ? (
         <>
           <div className="visual-receipt">
-            <span className="eyebrow">TODAY AT THE DESK</span>
             <h3>
               A good visit.
               <br />
@@ -84,7 +83,6 @@ export function WorkflowVisual({ kind }: { kind: string }) {
             </div>
           </div>
           <div className="visual-answer">
-            <span className="eyebrow">CONSULTATION / ANSWER RECEIVED</span>
             <h4>What would you like to change?</h4>
             <p>
               Keep the length, soften the shape, and make it easier to style

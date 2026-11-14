@@ -75,9 +75,6 @@ export default function Landing() {
       <SiteHeader />
       <main id="main">
         <section className="hero">
-          <div className="hero-label">
-            <Star />A GOOD DAY STARTS HERE
-          </div>
           <div className="hero-heading-wrap">
             <span className="hero-doodle doodle-left">
               <Star />
@@ -112,16 +109,15 @@ export default function Landing() {
           </div>
           <p className="hero-description">
             Bookings, walk-ins, your people, and all the little details.
-            <br className="desktop-break" /> A beautifully joined-up workspace
-            for your salon.
+            <br className="desktop-break" /> One workspace for your salon.
           </p>
           <div className="hero-actions">
-            <ArrowLink>Bring your salon together</ArrowLink>
+            <ArrowLink>See Etalier for your salon</ArrowLink>
             <a className="text-action" href="/contact">
               <span className="play-circle">
                 <Icon name="play" size={13} />
               </span>
-              Take a little look
+              Request a walkthrough
             </a>
           </div>
           <p className="hero-note">
@@ -156,9 +152,7 @@ export default function Landing() {
         <section id="product" className="features section-space">
           <div className="section-heading" data-reveal>
             <div>
-              {/* <span className="eyebrow">
-                LESS RUNNING AROUND. MORE RUNNING YOUR SALON.
-              </span> */}
+              {/*  */}
               <h2>
                 Everything clicks.
                 <br />
@@ -204,7 +198,7 @@ export default function Landing() {
                 </div>
                 <Star className="feature-star" />
               </div>
-              {/* <span className="feature-number">01 / THE FRONT DESK</span> */}
+              {/*  */}
               <h3>Keep the good days moving.</h3>
               <p>
                 Welcome a walk-in, choose the services, record the payment. A
@@ -245,9 +239,7 @@ export default function Landing() {
                   little things.
                 </span>
               </div>
-              {/* <span className="feature-number">
-                02 / THE CUSTOMER EXPERIENCE
-              </span> */}
+              {/*  */}
               <h3>Make every visit feel personal.</h3>
               <p>
                 Preferences, past visits, photos, and form answers. Keep the
@@ -288,7 +280,7 @@ export default function Landing() {
                   <path d="M10 72C15 5 89 8 66 50 49 82 22 30 74 14m-9-4 15 1-4 14" />
                 </svg>
               </div>
-              {/* <span className="feature-number">03 / THE PEOPLE BEHIND IT</span> */}
+              {/*  */}
               <h3>Look after your team, too.</h3>
               <p>
                 Working hours, leave, commission, and payroll drafts. Give the
@@ -303,7 +295,7 @@ export default function Landing() {
         </section>
         <section className="day-story" id="your-day">
           <div className="day-story-top" data-reveal>
-            {/* <span className="eyebrow">LITTLE MOMENTS. ONE HAPPY FLOW.</span> */}
+            {/*  */}
             <h2>
               From “hello”
               <br />
@@ -373,7 +365,7 @@ export default function Landing() {
             </div>
           </div>
           <div className="human-copy" data-reveal>
-            {/* <span className="eyebrow">YOUR CRAFT. YOUR SPACE. YOUR PACE.</span> */}
+            {/*  */}
             <h2>
               You make
               <br />
@@ -402,7 +394,7 @@ export default function Landing() {
         </section>
         <section className="fit-section section-space" id="for-you">
           <div className="center-heading" data-reveal>
-            {/* <span className="eyebrow">THERE’S ROOM FOR YOU HERE.</span> */}
+            {/*  */}
             <h2>
               Your next chapter.
               <br />
@@ -517,7 +509,7 @@ export default function Landing() {
         </section>
         <section className="final-cta" data-reveal>
           <div>
-            {/* <span className="eyebrow">YOUR BEST DAYS ARE AHEAD.</span> */}
+            {/*  */}
             <h2>
               Make room
               <br />

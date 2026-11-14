@@ -105,7 +105,6 @@ export function ContactCTA({
   return (
     <section className="editorial-cta">
       <div>
-        <span className="eyebrow">LET’S MAKE IT PRACTICAL</span>
         <h2>{title}</h2>
         <p>{text}</p>
         <a className="button yellow" href="/contact">

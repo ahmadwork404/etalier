@@ -1,18 +1,18 @@
+import { pageMetadata } from "@/lib/seo";
 import { SiteHeader, SiteFooter, ContactCTA } from "@/components/SiteChrome";
 import { Icon } from "@/components/Icons";
-export const metadata = {
-  title: "Getting started & pricing enquiries — Etalier",
+export const metadata = pageMetadata({
+  title: "Salon Software Pricing & Setup Enquiries | Etalier",
   description:
-    "Discuss your team size, locations and workflow, then review the scope and pricing before setting up Etalier.",
-  alternates: { canonical: "/pricing" },
-};
+    "Discuss Etalier pricing, team size, locations and setup requirements. Request a product walkthrough for your salon.",
+  path: "/pricing",
+});
 export default function PricingPage() {
   return (
     <>
       <SiteHeader />
       <main id="main">
         <section className="editorial-hero centered">
-          <span className="eyebrow">GETTING STARTED</span>
           <h1>
             Start with the fit.
             <br />
@@ -29,7 +29,6 @@ export default function PricingPage() {
         </section>
         <section className="setup-grid editorial-section">
           <article className="setup-card tone-butter">
-            <span className="eyebrow">BRING TO THE CONVERSATION</span>
             <h2>A few details help.</h2>
             <ul>
               <li>How many people and locations you manage.</li>
@@ -44,7 +43,6 @@ export default function PricingPage() {
             </p>
           </article>
           <article className="setup-card">
-            <span className="eyebrow">BEFORE YOU COMMIT</span>
             <h2>Check the actual workflow.</h2>
             <p>
               Use a walkthrough to follow a real example from booking to payment
@@ -62,7 +60,6 @@ export default function PricingPage() {
           </article>
         </section>
         <section className="editorial-section setup-faq">
-          <span className="eyebrow">PRACTICAL QUESTIONS</span>
           <h2>Know what you’re setting up.</h2>
           {[
             [

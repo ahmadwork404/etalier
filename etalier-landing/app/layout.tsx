@@ -1,12 +1,27 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { StructuredData } from "@/components/StructuredData";
+import { organisation, website } from "@/lib/seo";
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://etalier.app",
   ),
-  title: "Etalier — Your salon. All together.",
+  title: "Salon Management Software for Bookings & Teams | Etalier",
   description:
-    "Bookings, walk-ins, customers, your team, and payroll. A beautifully joined-up workspace for your salon.",
+    "Manage salon bookings, walk-ins, customer records, team schedules and payroll in one workspace. Explore Etalier and request a walkthrough.",
+  applicationName: "Etalier",
+  category: "Business software",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     title: "Etalier — Your salon. All together.",
     description: "A little less admin. A lot more salon.",
@@ -34,7 +49,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <StructuredData
+          data={{
+            "@context": "https://schema.org",
+            "@graph": [organisation, website],
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

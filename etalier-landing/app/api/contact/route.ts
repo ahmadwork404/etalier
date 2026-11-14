@@ -8,7 +8,9 @@ export async function POST(request: Request) {
       ? ["http://localhost:3001", "http://127.0.0.1:3001"]
       : []),
     ...(process.env.SITE_ORIGIN ? [process.env.SITE_ORIGIN] : []),
-    ...(process.env.NEXT_PUBLIC_SITE_URL ? [process.env.NEXT_PUBLIC_SITE_URL] : []),
+    ...(process.env.NEXT_PUBLIC_SITE_URL
+      ? [process.env.NEXT_PUBLIC_SITE_URL]
+      : []),
   ]);
   if (!origin || !allowed.has(origin))
     return Response.json(
@@ -22,7 +24,9 @@ export async function POST(request: Request) {
     );
   const backend =
     process.env.BACKEND_API_URL ||
-    (process.env.CLOUDFLARE_WORKER === "1" ? "https://etalier-api.internal" : "") ||
+    (process.env.CLOUDFLARE_WORKER === "1"
+      ? "https://etalier-api.internal"
+      : "") ||
     (process.env.NODE_ENV !== "production" ? "http://127.0.0.1:4000" : "");
   if (!backend)
     return Response.json(
@@ -58,14 +62,25 @@ export async function POST(request: Request) {
   }
   try {
     const body = JSON.parse(Buffer.concat(chunks).toString("utf8"));
-    const send = process.env.CLOUDFLARE_WORKER === "1"
-      ? (await import(/* webpackIgnore: true */ "cloudflare:workers")).env.API.fetch.bind((await import(/* webpackIgnore: true */ "cloudflare:workers")).env.API)
-      : fetch;
+    const send =
+      process.env.CLOUDFLARE_WORKER === "1"
+        ? (
+            await import(/* webpackIgnore: true */ "cloudflare:workers")
+          ).env.API.fetch.bind(
+            (await import(/* webpackIgnore: true */ "cloudflare:workers")).env
+              .API,
+          )
+        : fetch;
     const response = await send(
       backend.replace(/\/$/, "") + "/api/v1/contact-leads",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json", Origin: origin,"x-etalier-client-ip":request.headers.get("cf-connecting-ip")||"0.0.0.0" },
+        headers: {
+          "Content-Type": "application/json",
+          Origin: origin,
+          "x-etalier-client-ip":
+            request.headers.get("cf-connecting-ip") || "0.0.0.0",
+        },
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(12000),
         cache: "no-store",
