@@ -1,0 +1,17 @@
+**/node_modules
+**/.next*
+**/dist
+**/out
+**/.env
+**/.env.*
+**/.dev.vars*
+**/*.log
+**/*.tsbuildinfo
+**/.qa
+**/.npm-logs
+**/.wrangler
+**/.sites-runtime
+**/.vinext
+.git
+.local-backups
+salon-studio

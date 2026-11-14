@@ -1,0 +1,18 @@
+{
+  "name": "atelier-platform",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev -w @atelier/api",
+    "dev:web": "npm run dev -w @atelier/web",
+    "build": "npm run build --workspaces",
+    "test": "npm run test -w @atelier/api",
+    "db:migrate": "npm run db:migrate -w @atelier/api",
+    "admin:create": "npm run admin:create -w @atelier/api"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10"
+  }
+}

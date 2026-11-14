@@ -1,0 +1,1260 @@
+Build a Production-Ready Multi-Tenant Salon Management CRM & Business Operating System
+1. Project Overview
+Build a complete, modern, production-grade Salon Management CRM & Business Operations Platform designed for hair salons, beauty salons, barbershops, spas, nail studios, skincare clinics, and other beauty service businesses.
+The platform should function as an all-in-one business management system that allows salon owners to manage their entire business from one centralized dashboard.
+This is not simply an appointment booking application. It must be a comprehensive CRM, employee management system, inventory management system, booking platform, customer engagement platform, marketing automation system, and business analytics solution.
+The product must be designed as a scalable SaaS application supporting multiple independent salon businesses (tenants).
+Use a temporary professional brand name. Design a complete brand identity, including logo direction, typography, colors, visual language, and UI components. The brand name should be easy to replace later without changing application architecture.
+
+2. Technology Stack & Architecture
+Use the following technology stack:
+Frontend
+Next.js (App Router)
+React
+TypeScript
+Tailwind CSS
+A professional component library such as shadcn/ui
+React Hook Form for form management
+Zod for validation
+TanStack Query for server state management
+Recharts for analytics and visualizations
+Backend
+Node.js
+TypeScript
+NestJS or a well-structured Express.js backend
+RESTful API architecture
+Modular, service-oriented backend architecture
+Background job processing for scheduled tasks and notifications
+Database & Storage
+PostgreSQL as the primary database
+Prisma ORM or Drizzle ORM
+S3-compatible object storage for images, documents, customer uploads, and media
+Infrastructure
+Production-ready deployment configuration
+Structured logging and error monitoring
+Database migrations and backup strategy
+Architecture Requirements
+Maintain a clean separation between:
+Frontend application
+Backend API
+Authentication and authorization
+Business logic
+Database layer
+Background workers
+Notification services
+File storage
+Tenant management
+System administration
+Do not put business logic inside frontend components.
+Every module must have clearly defined responsibilities, interfaces, validation, and error handling.
+
+3. Multi-Tenant SaaS Architecture
+Multi-tenancy is a fundamental requirement, not an optional feature.
+The platform must support hundreds or thousands of independent salon businesses.
+Each tenant must have its own:
+Business profile
+Salon locations and branches
+Employees
+Customers
+Appointments
+Services
+Products
+Inventory
+Suppliers
+Payments and transactions
+Reports and analytics
+Business settings
+Branding and customization
+Notification configurations
+Automation settings
+Subscription and billing information
+Tenant Isolation
+Implement strict tenant-level data isolation.
+Requirements:
+Every tenant-owned database record must be associated with a tenant.
+Enforce tenant scoping at the backend/database layer.
+Never trust tenant IDs supplied by the frontend.
+Resolve tenant context from authenticated sessions and validated membership.
+Prevent cross-tenant data access through APIs.
+Support users who belong to multiple salon businesses.
+Support multiple branches under one salon organization.
+Tenant Customization
+Each salon should be able to configure:
+Business name
+Logo
+Brand colors
+Contact information
+Address and business hours
+Currency
+Timezone
+Booking preferences
+Cancellation policy
+Tax settings
+Notification preferences
+Enabled modules
+A tenant must never be able to access another tenant's private configurations or data.
+
+4. Super Admin & Platform Administration
+Build a powerful central Super Admin panel.
+The Super Admin must have complete control over the SaaS platform.
+Global Administration
+The Super Admin should be able to:
+Create, suspend, activate, and delete tenants.
+View all registered businesses.
+View tenant usage and activity.
+Manage subscriptions and plans.
+Configure platform-wide settings.
+Manage global feature availability.
+View system health and background job status.
+Manage platform users and administrators.
+View audit logs.
+Configure email and notification providers.
+Manage integrations.
+Configure storage and usage limits.
+Manage maintenance mode.
+Control platform-wide permissions.
+Feature Management System
+This is a particularly important requirement.
+Build a centralized feature flag and module management system.
+The Super Admin must be able to independently enable or disable individual platform features.
+Examples:
+Feature
+Configurable
+Appointment Booking
+Yes
+Customer CRM
+Yes
+Inventory Management
+Yes
+Employee Management
+Yes
+Email Notifications
+Yes
+SMS Notifications
+Yes
+WhatsApp Notifications
+Yes
+Customer Review Requests
+Yes
+UGC Collection Requests
+Yes
+Marketing Campaigns
+Yes
+Loyalty Program
+Yes
+Membership Management
+Yes
+Online Payments
+Yes
+Customer Portal
+Yes
+Public Booking Page
+Yes
+Advanced Analytics
+Yes
+AI Assistant
+Yes
+
+Feature management must support:
+Global feature switches.
+Tenant-specific feature switches.
+Subscription-plan restrictions.
+Feature-level permissions.
+Configuration of individual feature settings.
+For example:
+If the Super Admin disables UGC Requests globally, no tenant should be able to use that feature.
+If the Super Admin enables UGC Requests globally but disables it for Salon A, Salon A must not be able to access it, while Salon B can continue using it.
+A tenant administrator may only configure features permitted by the Super Admin.
+Important Implementation Rule
+Feature flags must be enforced by the backend, not just hidden in the frontend.
+Disabled features must reject unauthorized API requests and prevent associated background jobs from executing.
+The system should also support feature dependencies, such as requiring the appointment module before enabling appointment-based reminders.
+
+5. Authentication, Authorization & User Management
+Implement a complete authentication and access-control system.
+Authentication
+Include:
+Email and password registration.
+Secure login.
+Email verification.
+Password reset.
+Password change.
+Secure logout.
+Session management.
+Refresh-token rotation.
+Optional two-factor authentication.
+Login attempt protection.
+Account suspension.
+Session revocation.
+Secure invitation-based employee registration.
+Use secure password hashing such as Argon2id.
+Use secure, HttpOnly, SameSite cookies where appropriate.
+Never store plaintext passwords or sensitive authentication tokens in the database.
+Role-Based Access Control (RBAC)
+Support multiple roles:
+Platform Level
+Super Admin
+Platform Support
+Platform Analyst
+Tenant Level
+Business Owner
+Salon Administrator
+Branch Manager
+Receptionist
+Senior Stylist
+Stylist
+Junior Stylist
+Accountant
+Inventory Manager
+Marketing Manager
+Implement granular permissions rather than relying exclusively on hardcoded roles.
+Examples:
+View customers
+Create customers
+Edit customer profiles
+Delete customer records
+View appointments
+Create appointments
+Cancel appointments
+Manage employees
+View employee salaries
+Manage inventory
+Manage products
+View financial reports
+Manage discounts
+Access marketing tools
+Manage integrations
+Change business settings
+The business owner must be able to create custom roles and assign permissions.
+Support branch-level access restrictions.
+
+6. Customer Relationship Management (CRM)
+Build a complete customer management system.
+Customer Profiles
+Each customer should have a detailed profile containing:
+Full name
+Profile picture
+Email
+Phone number
+Date of birth
+Gender (optional)
+Address (optional)
+Customer notes
+Preferred communication channel
+Customer registration date
+Customer status
+Assigned stylist
+Customer tags
+Marketing consent preferences
+Customer History
+Maintain a complete customer activity timeline:
+Previous appointments
+Upcoming appointments
+Cancelled appointments
+No-shows
+Purchased services
+Purchased products
+Payment history
+Customer feedback
+Reviews
+Communication history
+Discounts and promotions
+Memberships
+Loyalty points
+Uploaded photographs
+Before-and-after treatment images
+Customer Segmentation
+Allow businesses to categorize customers:
+New customers
+Returning customers
+VIP customers
+Inactive customers
+Frequent customers
+High-spending customers
+Customers who haven't visited in 30/60/90 days
+Customers with upcoming birthdays
+Customers who haven't completed a review
+Support custom tags and saved customer segments.
+Customer Engagement
+Provide tools to:
+Contact customers.
+Send personalized offers.
+Send appointment reminders.
+Send follow-up messages.
+Request feedback.
+Request reviews.
+Request UGC.
+Run re-engagement campaigns.
+
+7. Appointment & Booking Management
+Develop a complete appointment scheduling system.
+Appointment Booking
+Support:
+Online booking.
+Receptionist-created bookings.
+Walk-in appointments.
+Phone bookings.
+Employee-created bookings.
+Multiple services in one appointment.
+Multiple employees where appropriate.
+Service duration.
+Buffer time.
+Employee availability.
+Branch-specific availability.
+Resource availability.
+Booking notes.
+Special customer instructions.
+Appointment Calendar
+Provide multiple calendar views:
+Daily
+Weekly
+Monthly
+Employee-wise
+Branch-wise
+Service-wise
+The calendar should support:
+Drag-and-drop rescheduling.
+Appointment status indicators.
+Quick appointment creation.
+Filtering.
+Search.
+Conflict detection.
+Availability checking.
+Appointment Statuses
+Pending
+Confirmed
+Checked In
+In Progress
+Completed
+Cancelled
+No Show
+Rescheduled
+Booking Rules
+Allow salon administrators to configure:
+Minimum advance booking time.
+Maximum advance booking period.
+Cancellation windows.
+Rescheduling restrictions.
+Deposit requirements.
+Booking confirmation rules.
+Employee-specific schedules.
+Service-specific booking rules.
+Breaks and holidays.
+Branch-specific business hours.
+Prevent double bookings and overlapping employee schedules.
+Use proper database transactions and concurrency-safe booking logic.
+
+8. Customer Booking Forms & Digital Intake Forms
+Create a flexible form builder.
+Businesses should be able to create customized forms and attach them to:
+Individual services.
+Appointment types.
+New customer registrations.
+Specific treatment categories.
+Examples:
+Hair treatment consultation.
+Hair color history.
+Skin sensitivity questionnaire.
+Allergies and contraindications.
+Beauty treatment consent.
+Customer preferences.
+Special requirements.
+Before-treatment assessment.
+Form Builder
+Include:
+Text fields.
+Text areas.
+Dropdowns.
+Radio buttons.
+Checkboxes.
+Date fields.
+File uploads.
+Image uploads.
+Consent checkboxes.
+Required and optional questions.
+Form Distribution
+Automatically send booking and intake forms to customers through supported communication channels.
+Customers should be able to complete forms through secure, mobile-friendly links without necessarily creating an account.
+Track:
+Form sent.
+Form opened.
+Form completed.
+Form expired.
+Form submitted.
+Form reviewed.
+Store submitted forms securely and associate them with the relevant customer and appointment.
+Support form templates and reusable forms.
+
+9. Employee & Workforce Management
+Build a complete employee management module.
+Employee Profiles
+Include:
+Name
+Contact information
+Profile picture
+Job title
+Department
+Branch assignment
+Employment status
+Joining date
+Skills
+Service specializations
+Working hours
+Availability
+Leave records
+Assigned permissions
+Commission configuration
+Scheduling
+Support:
+Employee shifts.
+Weekly schedules.
+Working hours.
+Breaks.
+Holidays.
+Leave requests.
+Shift changes.
+Overtime records.
+Availability management.
+Performance Tracking
+Track:
+Number of appointments.
+Completed appointments.
+Cancelled appointments.
+No-shows.
+Revenue generated.
+Services performed.
+Products sold.
+Customer retention.
+Customer ratings.
+Reviews received.
+Average service value.
+Commission earned.
+Commission & Compensation
+Allow configurable commission structures:
+Fixed commission.
+Percentage-based commission.
+Service-specific commission.
+Product sales commission.
+Performance-based incentives.
+Support salary and payroll records, with restricted access to confidential compensation data.
+Do not assume that all salons use the same compensation structure.
+
+10. Service & Treatment Management
+Create a complete service catalog.
+Examples:
+Haircut.
+Hair coloring.
+Hair styling.
+Hair treatment.
+Facial.
+Manicure.
+Pedicure.
+Makeup.
+Nail extensions.
+Spa treatments.
+Bridal packages.
+Each service should support:
+Service name.
+Description.
+Category.
+Images.
+Duration.
+Price.
+Optional variations.
+Assigned employees.
+Required employee skills.
+Required products.
+Required resources.
+Buffer time.
+Booking availability.
+Tax configuration.
+Commission rules.
+Deposit requirements.
+Allow packages and bundled services.
+Support service-specific pricing and employee-specific pricing when configured.
+
+11. Inventory & Product Management
+Develop a robust inventory management system.
+Product Management
+Track:
+Product name.
+SKU.
+Barcode.
+Category.
+Brand.
+Supplier.
+Purchase price.
+Selling price.
+Current quantity.
+Minimum stock level.
+Reorder threshold.
+Product images.
+Expiration date (where applicable).
+Product status.
+Inventory Operations
+Support:
+Stock additions.
+Stock deductions.
+Stock adjustments.
+Stock transfers between branches.
+Damaged stock.
+Expired stock.
+Returns.
+Purchase orders.
+Goods received.
+Supplier management.
+Inventory audits.
+Automated Inventory Tracking
+Automatically deduct inventory when products are sold.
+Support service-based product consumption.
+For example:
+A hair coloring service may consume configured quantities of hair color, developer, and other products.
+Track product usage against appointments and employees.
+Inventory Alerts
+Generate alerts for:
+Low stock.
+Out of stock.
+Expiring products.
+Expired products.
+Unusual stock adjustments.
+Pending purchase orders.
+Maintain a complete inventory movement history.
+Never allow inventory changes without a corresponding auditable transaction.
+
+12. Payments, POS & Financial Management
+Build an integrated point-of-sale and financial management module.
+POS
+Support:
+Service purchases.
+Product purchases.
+Combined service and product orders.
+Discounts.
+Coupons.
+Gift cards.
+Membership redemptions.
+Deposits.
+Partial payments.
+Refunds.
+Multiple payment methods.
+Payment Methods
+Allow configurable methods:
+Cash.
+Card.
+Bank transfer.
+Online payment gateway.
+Other custom payment methods.
+Payment gateway integration should be modular. For now only add built in stripe configuration
+Financial Reporting
+Track:
+Daily revenue.
+Weekly revenue.
+Monthly revenue.
+Revenue by branch.
+Revenue by employee.
+Revenue by service.
+Product sales.
+Discounts.
+Refunds.
+Taxes.
+Outstanding balances.
+Expenses.
+Profitability estimates.
+Maintain separate records for orders, payments, refunds, and accounting transactions.
+
+13. Automated Notifications & Reminders
+Build a centralized notification and automation engine.
+Support communication channels through modular integrations:
+Email.
+SMS.
+WhatsApp Business API.
+In-app notifications.
+Appointment Automation
+Automatically send:
+Booking confirmation.
+Booking form.
+Appointment reminder.
+24-hour reminder.
+2-hour reminder.
+Appointment cancellation notification.
+Rescheduling notification.
+Appointment completion message.
+Allow tenant administrators to configure timing and channels.
+Post-Appointment Automation
+After appointment completion:
+Send thank-you message.
+Request feedback.
+Request a review.
+Request UGC.
+Recommend relevant services.
+Send follow-up care instructions.
+Offer a future booking.
+Automation Builder
+Create a visual or structured workflow automation system.
+Each automation should contain:
+Trigger.
+Conditions.
+Actions.
+Delay.
+Execution rules.
+Enabled/disabled state.
+Example:
+Trigger: Appointment Completed.
+Actions:
+Wait 2 hours.
+Send thank-you email.
+Wait 24 hours.
+Request customer review.
+If the customer has consented to UGC requests, send UGC invitation.
+Allow administrators to pause, edit, duplicate, and delete workflows.
+Prevent duplicate notifications and automation loops.
+Track execution history and failures.
+
+14. Reviews, Reputation Management & Feedback
+Build a complete customer feedback and reputation management system.
+Review Requests
+Automatically request reviews after completed appointments.
+Support:
+Email review requests.
+SMS review requests.
+WhatsApp review requests.
+Custom review landing pages.
+Track:
+Requests sent.
+Requests opened.
+Reviews submitted.
+Response rate.
+Average rating.
+Internal Feedback
+Allow customers to provide private feedback.
+Support:
+Star ratings.
+Written feedback.
+Service ratings.
+Employee ratings.
+Overall experience ratings.
+Customer suggestions.
+Allow administrators to view and respond to feedback.
+Third-Party Reviews
+Design integration points for platforms such as Google Business Profile.
+Do not pretend to publish reviews to external platforms without a valid integration.
+Never condition review incentives on positive ratings or suppress negative feedback.
+
+15. UGC (User-Generated Content) Management
+Create a dedicated UGC management module.
+The salon should be able to request customer-generated content after services.
+Examples:
+Before-and-after photographs.
+Hairstyle photographs.
+Customer testimonials.
+Short video testimonials.
+Social media posts.
+Customer experience stories.
+UGC Request Workflow
+Appointment is completed.
+Customer receives a UGC invitation.
+Customer opens a secure upload page.
+Customer uploads photographs/videos or submits a testimonial.
+Customer reviews the requested usage permissions.
+Customer explicitly grants or declines consent.
+Salon administrator reviews the submission.
+Approved content becomes available in the UGC library.
+UGC Management
+Support:
+Content uploads.
+Content categorization.
+Customer association.
+Appointment association.
+Moderation.
+Approval/rejection.
+Usage permissions.
+Consent records.
+Expiration and withdrawal of consent.
+Content deletion.
+Downloading approved media.
+Customer consent for marketing use must be separate from consent to provide the service.
+UGC requests must be independently switchable through the feature management system.
+
+16. Marketing & Customer Retention
+Create an integrated marketing module.
+Campaign Management
+Support:
+Email campaigns.
+SMS campaigns.
+WhatsApp campaigns where permitted.
+Birthday offers.
+Seasonal campaigns.
+Promotional campaigns.
+Customer reactivation campaigns.
+Service-specific promotions.
+Customer Retention
+Identify customers who:
+Haven't booked recently.
+Frequently visit.
+Have high lifetime spending.
+Have upcoming birthdays.
+Have unused memberships.
+Are likely to return based on booking history.
+Loyalty Program
+Support:
+Points-based loyalty.
+Visit-based rewards.
+Referral rewards.
+Membership tiers.
+Discount rewards.
+Redeemable benefits.
+All marketing activities must respect customer consent, opt-outs, and communication preferences.
+
+17. Memberships, Packages & Gift Cards
+Support recurring and prepaid business offerings.
+Memberships
+Monthly memberships.
+Annual memberships.
+Service-based memberships.
+Discount-based memberships.
+Custom membership benefits.
+Membership renewals.
+Membership cancellation.
+Expiration tracking.
+Packages
+Allow customers to purchase service bundles.
+Track remaining service credits and redemption history.
+Gift Cards
+Support:
+Gift card creation.
+Unique codes.
+Fixed monetary value.
+Service-specific gift cards.
+Redemption.
+Expiration rules.
+Balance tracking.
+
+18. Customer Portal & Public Booking Website
+Create a public-facing booking experience for each salon.
+Each tenant should have a shareable booking page.
+Support configurable:
+Salon logo.
+Branding.
+Services.
+Prices.
+Branch selection.
+Employee selection.
+Available time slots.
+Customer details.
+Booking forms.
+Deposit payments.
+Booking confirmation.
+Customer Portal
+Customers should be able to:
+View appointments.
+Book appointments.
+Reschedule appointments where permitted.
+Cancel appointments where permitted.
+View booking history.
+Update profile details.
+View memberships.
+View loyalty points.
+Submit feedback.
+Upload requested UGC.
+Manage communication preferences.
+Request account deletion.
+Support mobile-first layouts.
+
+19. Analytics & Business Intelligence
+Build an advanced analytics dashboard.
+Business Overview
+Display:
+Total revenue.
+Total bookings.
+Completed appointments.
+Upcoming appointments.
+Cancellation rate.
+No-show rate.
+New customers.
+Returning customers.
+Average customer spending.
+Customer lifetime value.
+Inventory value.
+Top-performing services.
+Top-performing employees.
+Analytics Filters
+Allow filtering by:
+Date range.
+Branch.
+Employee.
+Service.
+Product.
+Customer segment.
+Business Insights
+Provide actionable insights, including:
+Best-performing services.
+Underperforming services.
+Peak booking hours.
+Employee performance.
+Customer retention trends.
+Inventory consumption.
+Revenue trends.
+Repeat booking rates.
+Use charts, tables, and visual summaries.
+Never fabricate analytical data. All metrics must be derived from actual stored business records.
+
+20. Global Settings & Configuration
+Provide comprehensive configuration pages for each tenant.
+Include:
+Business profile.
+Branch management.
+User management.
+Roles and permissions.
+Service settings.
+Booking settings.
+Employee settings.
+Inventory settings.
+Payment settings.
+Tax settings.
+Notification settings.
+Automation settings.
+Review settings.
+UGC settings.
+Marketing settings.
+Privacy settings.
+Integrations.
+Subscription management.
+All settings must be persisted and reflected throughout the platform.
+
+21. Privacy, Security & Data Protection
+Security and privacy are critical requirements.
+Implement security as part of the architecture rather than adding it at the end.
+Application Security
+Strong password hashing.
+Secure authentication sessions.
+Refresh-token rotation.
+CSRF protection where applicable.
+XSS protection.
+SQL injection prevention.
+Strict input validation.
+Output encoding.
+Rate limiting.
+Brute-force protection.
+Secure HTTP headers.
+CORS restrictions.
+Request size limits.
+Secure file uploads.
+File type validation.
+Protection against unauthorized resource access.
+Dependency vulnerability scanning.
+Authorization
+Enforce permissions on every protected backend endpoint.
+Verify tenant membership and resource ownership.
+Prevent insecure direct object references.
+Prevent privilege escalation.
+Separate platform-level and tenant-level permissions.
+Privacy
+Collect only necessary customer information.
+Provide configurable data retention policies.
+Maintain customer consent records.
+Support communication opt-outs.
+Provide customer data export.
+Provide account and data deletion workflows.
+Protect uploaded photographs and documents.
+Use private object storage and temporary signed URLs.
+Restrict employee access to sensitive customer information.
+Audit Logging
+Record important events:
+Login attempts.
+Failed authentication.
+User creation.
+Permission changes.
+Customer record changes.
+Appointment changes.
+Financial transactions.
+Inventory adjustments.
+Feature flag changes.
+Tenant configuration changes.
+Data exports.
+Administrative actions.
+Audit logs should include actor, tenant, action, target, timestamp, and relevant metadata.
+Do not expose sensitive information such as passwords, authentication tokens, or payment credentials in logs.
+
+22. API Architecture & Documentation
+Create a professional, versioned REST API.
+Use a structure such as:
+/api/v1/auth
+/api/v1/tenants
+/api/v1/customers
+/api/v1/appointments
+/api/v1/employees
+/api/v1/services
+/api/v1/inventory
+/api/v1/orders
+/api/v1/payments
+/api/v1/notifications
+/api/v1/automations
+/api/v1/reviews
+/api/v1/ugc
+/api/v1/analytics
+/api/v1/admin
+API Requirements
+Consistent response structures.
+Proper HTTP status codes.
+Centralized exception handling.
+Request validation.
+Pagination.
+Sorting.
+Filtering.
+Search.
+Idempotency for sensitive operations.
+Rate limiting.
+API versioning.
+Authentication and authorization.
+Tenant isolation.
+API Documentation
+Use Swagger/OpenAPI.
+Documentation must include:
+Endpoint descriptions.
+Request schemas.
+Response schemas.
+Authentication requirements.
+Permission requirements.
+Error responses.
+Query parameters.
+Example requests.
+Example responses.
+Generate and maintain documentation from actual API definitions.
+Swagger UI should be available in development and protected or appropriately restricted in production.
+
+23. UI/UX & Visual Design Requirements
+UI/UX quality is a first-class requirement.
+The platform must look like a polished, premium commercial SaaS product.
+Avoid generic AI-generated dashboard aesthetics.
+Design Direction
+Create a professional beauty-industry-inspired design.
+The interface should feel:
+Premium.
+Modern.
+Elegant.
+Professional.
+Minimal.
+Trustworthy.
+Easy to navigate.
+Visually organized.
+Use a cohesive design system.
+Establish:
+Primary colors.
+Secondary colors.
+Neutral palette.
+Typography scale.
+Spacing system.
+Border radius rules.
+Shadows.
+Iconography.
+Component states.
+Form styles.
+Table styles.
+Chart styles.
+Readability & Visibility
+This is extremely important.
+Prioritize readability and information visibility over decorative elements.
+Requirements:
+Strong text/background contrast.
+Clearly visible labels.
+Readable font sizes.
+Consistent spacing.
+Clear section hierarchy.
+Properly sized buttons.
+Visible form validation.
+Clearly differentiated statuses.
+Accessible color combinations.
+Avoid overly light gray text.
+Avoid unnecessary gradients.
+Avoid excessive visual clutter.
+Avoid tiny icons without labels where clarity matters.
+Use WCAG 2.2 AA as the accessibility target.
+Dashboard Experience
+Build role-aware dashboards.
+A salon owner should see business performance.
+A receptionist should see appointments and customer activity.
+An employee should see their schedule and assigned work.
+An inventory manager should see stock levels and purchase operations.
+A marketing manager should see campaigns, customer segments, and engagement.
+Navigation
+Use a structured sidebar with logical sections.
+Include:
+Overview
+Calendar
+Appointments
+Customers
+Employees
+Services
+Inventory
+POS & Orders
+Marketing
+Automations
+Reviews
+UGC
+Analytics
+Settings
+Only display modules that the authenticated user is permitted to access and that are enabled for the tenant.
+Responsive Design
+Fully support:
+Desktop.
+Laptop.
+Tablet.
+Mobile.
+The public booking experience and customer portal must be mobile-first.
+The internal dashboard must also remain usable on smaller screens.
+Interface States
+Every page must have:
+Loading states.
+Empty states.
+Error states.
+Success feedback.
+Confirmation dialogs.
+Form validation.
+Permission-denied states.
+Disabled-feature states.
+Do not create decorative buttons that do nothing.
+Every visible interaction must have functional behavior.
+
+24. Database Design & Data Integrity
+Design a normalized, scalable PostgreSQL schema.
+Include appropriate tables for:
+Tenants
+Branches
+Users
+Tenant memberships
+Roles
+Permissions
+Role permissions
+Feature flags
+Tenant feature configurations
+Customers
+Customer tags
+Customer consent records
+Employees
+Employee schedules
+Employee leaves
+Services
+Service categories
+Service assignments
+Appointments
+Appointment services
+Booking forms
+Form submissions
+Products
+Product categories
+Suppliers
+Inventory locations
+Inventory transactions
+Purchase orders
+Orders
+Payments
+Refunds
+Commissions
+Notifications
+Automation workflows
+Automation executions
+Reviews
+UGC submissions
+UGC consent records
+Marketing campaigns
+Memberships
+Loyalty accounts
+Gift cards
+Audit logs
+Subscriptions
+Integration configurations
+Requirements:
+Proper primary and foreign keys.
+Appropriate unique constraints.
+Indexed search and filtering fields.
+Transaction-safe business operations.
+Explicit deletion and retention policies.
+Created and updated timestamps.
+Soft deletion where appropriate.
+Database migrations.
+Referential integrity.
+Avoid a single massive table or poorly structured JSON-based data model.
+Use JSONB only where flexible configuration or structured metadata genuinely benefits from it.
+
+25. Testing & Quality Assurance
+The application must be tested, not just implemented.
+Include:
+Unit Testing
+Test business logic, services, validation, permissions, and utilities.
+Integration Testing
+Test database operations, authentication, tenant isolation, APIs, and background jobs.
+End-to-End Testing
+Test actual workflows:
+Create a salon tenant.
+Invite an employee.
+Create a service.
+Add inventory.
+Create a customer.
+Book an appointment.
+Send an intake form.
+Confirm the appointment.
+Complete the appointment.
+Deduct consumed inventory.
+Process payment.
+Send review request.
+Request UGC.
+View analytics.
+Security Testing
+Explicitly test:
+Cross-tenant data access.
+Unauthorized API requests.
+Role escalation.
+Feature flag bypass.
+Session security.
+File upload vulnerabilities.
+Booking race conditions.
+Payment duplication.
+Sensitive data exposure.
+
+26. Performance & Scalability
+Build for future growth.
+Requirements:
+Database query optimization.
+Appropriate indexing.
+Pagination for large datasets.
+Efficient API responses.
+Redis caching where beneficial.
+Background processing for notifications and automation.
+Queue retry policies.
+Failed-job monitoring.
+Rate limiting.
+Connection pooling.
+Efficient file delivery.
+Lazy loading where appropriate.
+The system should support multiple branches, thousands of customers per tenant, and increasing concurrent users.
+Avoid premature microservices. Start with a modular monolith and separate background workers where needed. Keep module boundaries clear so services can be extracted later if justified.
+
+27. Implementation Strategy
+Do not attempt to generate the entire application in one enormous, unstructured implementation.
+Build it in carefully planned phases.
+Phase 1 — Foundation
+Project architecture.
+Branding and design system.
+Database schema.
+Authentication.
+Tenant management.
+RBAC.
+Super Admin dashboard.
+Feature management.
+Phase 2 — Core Salon Operations
+Customer CRM.
+Employee management.
+Service management.
+Branch management.
+Appointment scheduling.
+Booking calendar.
+Phase 3 — Business Operations
+Inventory management.
+Suppliers.
+Purchase orders.
+POS.
+Orders.
+Payments.
+Commissions.
+Phase 4 — Customer Experience
+Public booking pages.
+Customer portal.
+Digital booking forms.
+Intake forms.
+Customer history.
+Phase 5 — Automation & Engagement
+Notification engine.
+Email/SMS/WhatsApp integrations.
+Appointment reminders.
+Review requests.
+UGC requests.
+Workflow automation.
+Phase 6 — Growth Features
+Marketing campaigns.
+Loyalty program.
+Memberships.
+Gift cards.
+Analytics.
+Business insights.
+Phase 7 — Production Readiness
+Security hardening.
+Automated testing.
+API documentation.
+Performance optimization.
+Logging and monitoring.
+Deployment.
+Backup and recovery.
+Final QA.
+
+28. Mandatory Development Rules
+Follow these rules throughout implementation:
+Build real, functional features rather than mockups.
+Do not use hardcoded sample data as a substitute for backend integration.
+Do not leave major buttons or actions non-functional.
+Do not expose tenant data across organizations.
+Do not implement permissions exclusively in the frontend.
+Do not implement feature flags exclusively in the frontend.
+Do not bypass validation for convenience.
+Do not store secrets in source code.
+Do not store sensitive customer files in publicly accessible storage.
+Do not duplicate business logic across modules.
+Do not create unnecessary microservices.
+Do not sacrifice readability for visual decoration.
+Do not compromise accessibility.
+Do not silently swallow errors.
+Do not generate undocumented APIs.
+Do not implement fake integrations.
+Do not mark incomplete functionality as completed.
+Do not allow background automations to run when their associated features are disabled.
+Ensure all important business operations are auditable.
+Write maintainable, typed, modular code.
+
+29. Required Deliverables
+The final application must include:
+Fully functional Next.js frontend.
+Node.js backend.
+PostgreSQL database.
+Database schema and migrations.
+Multi-tenant architecture.
+Secure authentication.
+Granular role-based access control.
+Super Admin panel.
+Central feature management system.
+Complete salon CRM.
+Appointment booking and scheduling.
+Inventory management.
+Employee management.
+POS and payment management.
+Booking forms and digital intake forms.
+Customer portal.
+Automated notifications.
+Review and feedback management.
+UGC management.
+Marketing automation.
+Analytics dashboard.
+Swagger/OpenAPI documentation.
+Automated tests.
+Docker configuration.
+Environment variable documentation.
+Deployment instructions.
+Database backup and recovery documentation.
+Security and privacy documentation.
+
+30. Final Product Vision
+The final result should be a complete, commercially viable Salon Management SaaS platform.
+Think of it as combining:
+Salon CRM.
+Appointment scheduling software.
+Employee management.
+Inventory and stock management.
+POS and business operations.
+Customer engagement.
+Marketing automation.
+Reputation management.
+UGC collection.
+Business analytics.
+All within one cohesive platform.
+The most important architectural principle is centralized control with tenant-level flexibility.
+The Super Admin controls what the platform offers. Individual salon owners control how their enabled modules operate within their own businesses. Employees only access what their assigned permissions allow. Customers only access their own information and authorized booking experiences.
+Build the system with security, privacy, readability, usability, maintainability, and scalability as core engineering principles.
+The objective is not to build a demonstration. The objective is to build a real SaaS product that can eventually be offered to independent salons and multi-branch beauty businesses as a paid subscription service.
+

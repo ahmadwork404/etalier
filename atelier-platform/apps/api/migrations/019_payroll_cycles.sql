@@ -1,0 +1,12 @@
+ALTER TABLE employees ADD COLUMN payroll_frequency text NOT NULL DEFAULT 'monthly' CHECK(payroll_frequency IN ('daily','weekly','biweekly','monthly'));
+ALTER TABLE employees ADD COLUMN payroll_start_on date NOT NULL DEFAULT CURRENT_DATE;
+ALTER TABLE employees ADD COLUMN payroll_enabled boolean NOT NULL DEFAULT true;
+ALTER TABLE employee_leaves ADD COLUMN paid boolean NOT NULL DEFAULT true;
+ALTER TABLE payroll_records ADD COLUMN commission_minor bigint NOT NULL DEFAULT 0 CHECK(commission_minor>=0);
+ALTER TABLE payroll_records ADD COLUMN unpaid_leave_minor bigint NOT NULL DEFAULT 0 CHECK(unpaid_leave_minor>=0);
+ALTER TABLE payroll_records ADD COLUMN deduction_reason text NOT NULL DEFAULT '';
+ALTER TABLE payroll_records ADD COLUMN bonus_reason text NOT NULL DEFAULT '';
+ALTER TABLE payroll_records ADD COLUMN automatic boolean NOT NULL DEFAULT false;
+ALTER TABLE payroll_records ADD COLUMN calculation jsonb NOT NULL DEFAULT '{}'::jsonb;
+ALTER TABLE payroll_records ADD COLUMN calculated_at timestamptz;
+CREATE INDEX payroll_employee_period ON payroll_records(tenant_id,employee_id,period_start,period_end);

@@ -1,0 +1,23 @@
+{
+  "name": "etalier",
+  "version": "1.0.0",
+  "private": true,
+  "engines": { "node": ">=22.13.0" },
+  "workspaces": ["atelier-platform/apps/*", "etalier-landing"],
+  "scripts": {
+    "dev": "npm run dev:portal",
+    "dev:api": "npm run dev --workspace @atelier/api",
+    "dev:portal": "npm run dev --workspace @atelier/web",
+    "dev:landing": "npm run dev --workspace etalier-landing",
+    "dev:prototype": "npm --prefix salon-studio run dev",
+    "build": "npm run build:api && npm run build:portal && npm run build:landing",
+    "build:api": "npm run build --workspace @atelier/api",
+    "build:portal": "npm run build --workspace @atelier/web",
+    "build:landing": "npm run build --workspace etalier-landing",
+    "typecheck": "tsc --noEmit -p atelier-platform/apps/api/tsconfig.json && tsc --noEmit -p atelier-platform/apps/web/tsconfig.json && npm run typecheck --workspace etalier-landing",
+    "test": "npm run test --workspace @atelier/api",
+    "db:migrate": "npm run db:migrate --workspace @atelier/api",
+    "admin:create": "npm run admin:create --workspace @atelier/api"
+  },
+  "devDependencies": { "prettier": "^3.9.10", "typescript": "5.9.3" }
+}

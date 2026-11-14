@@ -1,0 +1,15 @@
+node_modules/
+.env
+.env.*
+!.env.example
+dist/
+.next/
+.next-verify/
+coverage/
+*.tsbuildinfo
+backups/
+.qa/
+
+.next-ready/
+
+.next-local/

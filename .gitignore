@@ -1,0 +1,33 @@
+# Installed dependencies and generated builds in every application
+node_modules/
+.next/
+.next-*/
+dist/
+out/
+coverage/
+*.tsbuildinfo
+
+# Local configuration, credentials, logs, database and tool state
+.env
+.env.*
+!.env.example
+!.env.*.example
+.dev.vars*
+*.pem
+*.key
+*.log
+.npm-logs/
+.qa/
+.local-backups/
+backups/
+.wrangler/
+.sites-runtime/
+.vinext/
+.agents/
+.codex/
+.DS_Store
+Thumbs.db
+
+# Local publication artifacts
+outputs/
+work/

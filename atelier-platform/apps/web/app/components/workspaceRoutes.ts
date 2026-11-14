@@ -1,0 +1,56 @@
+export const workspaceRoutes: Record<string, string> = {
+  "Quick Work": "/",
+  Overview: "/overview",
+  Bookings: "/bookings",
+  Customers: "/customers",
+  Employees: "/employees",
+  Services: "/services",
+  Calendar: "/calendar",
+  Branches: "/branches",
+  "Working hours": "/working-hours",
+  Leave: "/leave",
+  Products: "/products",
+  Suppliers: "/suppliers",
+  Inventory: "/inventory",
+  "Stock history": "/stock-history",
+  "Product consumption": "/product-consumption",
+  "POS & Orders": "/orders",
+  Payments: "/payments",
+  Expenses: "/expenses",
+  Commissions: "/commissions",
+  Payroll: "/payroll",
+  Analytics: "/analytics",
+  "Intake forms": "/intake-forms",
+  "Form submissions": "/form-submissions",
+  Reviews: "/reviews",
+  UGC: "/ugc",
+  Automations: "/automations",
+  Campaigns: "/campaigns",
+  Notifications: "/notifications",
+  Loyalty: "/loyalty",
+  "Membership plans": "/membership-plans",
+  Memberships: "/memberships",
+  "Gift cards": "/gift-cards",
+  Members: "/members",
+  Integrations: "/integrations",
+  Settings: "/settings",
+  Modules: "/modules",
+  Roles: "/roles",
+  "Privacy requests": "/privacy-requests",
+  "Audit log": "/audit-log",
+  "Platform tenants": "/admin/shops",
+  "Platform leads": "/admin/leads",
+  "Platform features": "/admin/modules",
+  "Platform members": "/admin/members",
+  "Platform logs": "/admin/logs",
+  "Job monitor": "/admin/jobs",
+};
+export function pageForPath(path: string) {
+  if (path === "/form-submissions") return "Intake forms";
+  if (/^\/customers\/[\da-f-]{36}$/i.test(path)) return "Customers";
+  return (
+    Object.keys(workspaceRoutes).find(
+      (name) => workspaceRoutes[name] === path,
+    ) || "Quick Work"
+  );
+}

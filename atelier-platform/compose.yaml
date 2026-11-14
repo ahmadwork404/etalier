@@ -1,0 +1,17 @@
+services:
+  web:
+    build: .
+    ports: ["3000:3000"]
+    environment:
+      API_INTERNAL_URL: http://api:4000
+    depends_on: [api]
+  api:
+    build: .
+    command: ["npm", "run", "start", "-w", "@atelier/api"]
+    env_file: ./apps/api/.env
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      DB_HOST: host.docker.internal
+      WEB_ORIGIN: ${WEB_ORIGIN:-https://atelier.example.com}
+    expose: ["4000"]
