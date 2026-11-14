@@ -4,7 +4,7 @@ import {
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
+} from "../services/r2-client.js";
 import { storage } from "../services/storage.js";
 import { validServiceImage } from "../services/service-image.js";
 import { z } from "zod";

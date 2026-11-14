@@ -1,5 +1,5 @@
 import type express from "express";
-import argon2 from "argon2";
+import passwords from "../services/passwords.js";
 import { z } from "zod";
 import { pool, transaction, scoped, audit } from "../db.js";
 import {
@@ -29,12 +29,7 @@ export function register(app: express.Express) {
       const d = credentials
         .extend({ name: z.string().trim().min(2).max(100) })
         .parse(req.body);
-      const hash = await argon2.hash(d.password, {
-        type: argon2.argon2id,
-        memoryCost: 65536,
-        timeCost: 3,
-        parallelism: 1,
-      });
+      const hash = await passwords.hash(d.password);
       const user = await transaction(async (c) => {
         const { rows } = await c.query(
           "INSERT INTO users(email,password_hash,name) VALUES($1,$2,$3) RETURNING id,name,email",
@@ -58,7 +53,7 @@ export function register(app: express.Express) {
       if (
         !u ||
         u.suspended ||
-        !(await argon2.verify(u.password_hash, d.password))
+        !(await passwords.verify(u.password_hash, d.password))
       ) {
         await pool.query(
           "INSERT INTO audit_logs(actor_id,action) VALUES($1,'auth.login_failed')",
@@ -155,9 +150,9 @@ export function register(app: express.Express) {
         "SELECT password_hash FROM users WHERE id=$1",
         [s.user_id],
       );
-      if (!(await argon2.verify(rows[0].password_hash, d.currentPassword)))
+      if (!(await passwords.verify(rows[0].password_hash, d.currentPassword)))
         throw new HttpError(401, "Incorrect password");
-      const hash = await argon2.hash(d.password, { type: argon2.argon2id });
+      const hash = await passwords.hash(d.password);
       await transaction(async (c) => {
         await c.query("UPDATE users SET password_hash=$1 WHERE id=$2", [
           hash,

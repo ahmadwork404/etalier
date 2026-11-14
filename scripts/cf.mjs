@@ -1,0 +1,10 @@
+import {spawnSync}from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import {fileURLToPath}from "node:url";
+import {parseEnv}from "node:util";
+const root=fileURLToPath(new URL("../",import.meta.url));
+const projects={api:"atelier-platform/apps/api",portal:"atelier-platform/apps/web",landing:"etalier-landing"};
+const [project,...args]=process.argv.slice(2);if(!projects[project]||!args.length)throw Error("Usage: node scripts/cf.mjs api|portal|landing <cf command>");
+const credential=path.join(root,".env.cloudflare-deploy");const local=fs.existsSync(credential)?parseEnv(fs.readFileSync(credential,"utf8")):{};
+const result=spawnSync(process.execPath,[path.join(root,"node_modules/cf/bin/cf"),...args],{cwd:path.join(root,projects[project]),env:{...process.env,...local,WRANGLER_SEND_METRICS:"false"},stdio:"inherit"});if(result.error)throw result.error;process.exit(result.status??1);

@@ -1,4 +1,4 @@
-import argon2 from "argon2";
+import passwords from "./services/passwords.js";
 import { pool, transaction, audit } from "./db.js";
 const email = process.env.ADMIN_EMAIL,
   password = process.env.ADMIN_PASSWORD;
@@ -9,7 +9,7 @@ if (!email || !password || password.length < 16) {
   process.exit(1);
 }
 try {
-  const hash = await argon2.hash(password, { type: argon2.argon2id });
+  const hash = await passwords.hash(password);
   await transaction(async (c) => {
     const r = await c.query(
       "INSERT INTO users(email,password_hash,name,platform_role,email_verified_at) VALUES($1,$2,'Platform administrator','super_admin',now()) RETURNING id",

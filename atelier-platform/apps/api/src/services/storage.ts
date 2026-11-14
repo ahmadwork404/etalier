@@ -4,8 +4,8 @@ import {
   GetObjectCommand,
   HeadObjectCommand,
   DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+  getSignedUrl,
+} from "./r2-client.js";
 import { HttpError } from "../security.js";
 import { integrationStatus } from "./providers.js";
 export function storage() {

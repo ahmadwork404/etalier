@@ -1,0 +1,2 @@
+function write(level:string,data:unknown,message?:string){const item=typeof data==="string"?{message:data}:{message:message||"application_event",...(data&&typeof data==="object"?data:{})};console.log(JSON.stringify({level,...item}));}
+export const logger={error:(data:unknown,message?:string)=>write("error",data,message),warn:(data:unknown,message?:string)=>write("warn",data,message),info:(data:unknown,message?:string)=>write("info",data,message)};

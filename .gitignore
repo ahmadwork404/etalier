@@ -19,6 +19,10 @@ coverage/
 .npm-logs/
 .qa/
 .local-backups/
+.local-tools/
+*.private.sql
+.cloudflare/
+dist-cloudflare/
 backups/
 .wrangler/
 .sites-runtime/

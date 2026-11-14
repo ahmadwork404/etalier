@@ -215,6 +215,18 @@ export function startPayrollScheduler() {
     if (busy) return;
     busy = true;
     try {
+      await processPayrolls();
+    } finally {
+      busy = false;
+    }
+  };
+  const timer = setInterval(() => {
+    tick().catch(() => console.error("Payroll generation failed"));
+  }, 60000);
+  timer.unref();
+}
+
+export async function processPayrolls(){
       for (const tenant of (
         await pool.query("SELECT id,plan FROM tenants WHERE status='active'")
       ).rows) {
@@ -229,12 +241,4 @@ export function startPayrollScheduler() {
             );
         }
       }
-    } finally {
-      busy = false;
-    }
-  };
-  const timer = setInterval(() => {
-    tick().catch(() => console.error("Payroll generation failed"));
-  }, 60000);
-  timer.unref();
 }

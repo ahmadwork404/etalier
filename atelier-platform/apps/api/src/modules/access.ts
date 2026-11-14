@@ -1,7 +1,7 @@
 import { portalUrl } from "../services/public-urls.js";
 import type express from "express";
 import { z } from "zod";
-import argon2 from "argon2";
+import passwords from "../services/passwords.js";
 import { pool, scoped, transaction, audit } from "../db.js";
 import {
   wrap,
@@ -324,7 +324,7 @@ export function register(app: express.Express) {
             password: credentials.shape.password,
           })
           .parse(req.body),
-        hash = await argon2.hash(d.password, { type: argon2.argon2id });
+        hash = await passwords.hash(d.password);
       await transaction(async (c) => {
         const t = (
           await c.query(

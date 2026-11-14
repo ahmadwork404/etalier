@@ -7,7 +7,8 @@ import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { rateLimit } from "express-rate-limit";
-import argon2 from "argon2";
+import passwords from "./services/passwords.js";
+import { isIP } from "node:net";
 import { z } from "zod";
 import { pool, transaction, scoped, audit } from "./db.js";
 import {
@@ -18,6 +19,14 @@ import {
   featureAllowed,
 } from "./security.js";
 const app = express();
+app.use((req,_res,next)=>{
+  if(process.env.CLOUDFLARE_WORKER === "1"){
+    const raw=String(req.headers["x-etalier-client-ip"]||"");
+    Object.defineProperty(req,"ip",{value:isIP(raw)?raw:"0.0.0.0",configurable:true});
+    delete req.headers["x-forwarded-for"];
+  }
+  next();
+});
 import { allowedOrigins } from "./services/public-urls.js";
 const origins = allowedOrigins();
 app.use(

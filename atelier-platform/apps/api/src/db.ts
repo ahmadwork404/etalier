@@ -1,15 +1,21 @@
 import "dotenv/config";
 import pg from "pg";
+import { AsyncLocalStorage } from "node:async_hooks";
 import { drizzle } from "drizzle-orm/node-postgres";
-export const pool = new pg.Pool({
+const requestPools = new AsyncLocalStorage<pg.Pool>();
+const nodePool = new pg.Pool({
+  ...(process.env.DATABASE_URL ? {connectionString:process.env.DATABASE_URL} : {
   host: process.env.DB_HOST || "localhost",
   port: Number(process.env.DB_PORT || 5432),
   user: process.env.DB_USER || "postgres",
   password: process.env.DB_PASSWORD,
   database: process.env.DATABASE_NAME || "atelier",
+  }),
   max: 10,
   connectionTimeoutMillis: 5000,
 });
+export const pool=new Proxy(nodePool,{get(target,property){const active=requestPools.getStore()||target;const value=Reflect.get(active,property);return typeof value==="function"?value.bind(active):value;}});
+export async function withDatabase<T>(connectionString:string,work:()=>Promise<T>){const requestPool=new pg.Pool({connectionString,max:4,connectionTimeoutMillis:10000,idleTimeoutMillis:1000});try{return await requestPools.run(requestPool,work);}finally{await requestPool.end();}}
 export const db = drizzle(pool);
 export async function transaction<T>(
   fn: (client: pg.PoolClient) => Promise<T>,

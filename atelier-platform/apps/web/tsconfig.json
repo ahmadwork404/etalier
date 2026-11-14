@@ -33,9 +33,16 @@
     ".next-ready/types/**/*.ts",
     ".next-ready/dev/types/**/*.ts",
     ".next-local/types/**/*.ts",
-    ".next-local/dev/types/**/*.ts"
+    ".next-local/dev/types/**/*.ts",
+    ".cloudflare/types/**/*.d.ts",
+    "cloudflare-env.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    ".next-local",
+    ".next-ready",
+    ".next-verify",
+    "dist"
   ]
 }

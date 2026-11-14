@@ -2,8 +2,13 @@
   "name": "etalier",
   "version": "1.0.0",
   "private": true,
-  "engines": { "node": ">=22.13.0" },
-  "workspaces": ["atelier-platform/apps/*", "etalier-landing"],
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "workspaces": [
+    "atelier-platform/apps/*",
+    "etalier-landing"
+  ],
   "scripts": {
     "dev": "npm run dev:portal",
     "dev:api": "npm run dev --workspace @atelier/api",
@@ -17,7 +22,20 @@
     "typecheck": "tsc --noEmit -p atelier-platform/apps/api/tsconfig.json && tsc --noEmit -p atelier-platform/apps/web/tsconfig.json && npm run typecheck --workspace etalier-landing",
     "test": "npm run test --workspace @atelier/api",
     "db:migrate": "npm run db:migrate --workspace @atelier/api",
-    "admin:create": "npm run admin:create --workspace @atelier/api"
+    "admin:create": "npm run admin:create --workspace @atelier/api",
+    "build:cloudflare": "npm run build:cloudflare --workspace @atelier/api && npm run build:cloudflare --workspace @atelier/web && npm run build:cloudflare --workspace etalier-landing"
   },
-  "devDependencies": { "prettier": "^3.9.10", "typescript": "5.9.3" }
+  "devDependencies": {
+    "prettier": "^3.9.10",
+    "typescript": "5.9.3",
+    "cf": "1.0.0-beta.32",
+    "esbuild": "0.28.0",
+    "vinext": "1.0.0-beta.5",
+    "vite": "8.0.13",
+    "@cloudflare/vite-plugin": "2.0.0-beta.v.17",
+    "@vitejs/plugin-react": "6.0.2",
+    "@vitejs/plugin-rsc": "0.5.26",
+    "react-server-dom-webpack": "19.2.6"
+  },
+  "type": "module"
 }

@@ -66,18 +66,17 @@ export async function deliverLead(id: string, sender: Sender = sendEmail) {
   }
   return true;
 }
+export async function processLeadNotifications() {
+  const pending=(await pool.query("SELECT id FROM contact_leads WHERE notification_status IN ('pending','sending') AND next_attempt_at<=now() ORDER BY created_at LIMIT 10")).rows;
+  for(const lead of pending)await deliverLead(lead.id);
+}
 export function startLeadNotifications() {
   let running = false;
   const tick = async () => {
     if (running) return;
     running = true;
     try {
-      const pending = (
-        await pool.query(
-          "SELECT id FROM contact_leads WHERE notification_status IN ('pending','sending') AND next_attempt_at<=now() ORDER BY created_at LIMIT 10",
-        )
-      ).rows;
-      for (const lead of pending) await deliverLead(lead.id);
+      await processLeadNotifications();
     } catch {
       logger.warn("lead_notifications_unavailable");
     } finally {

@@ -6,7 +6,7 @@ import { HttpError } from "../security.js";
 import { customerToken } from "./engagement.js";
 import { sameBranch } from "../services/inventory.js";
 import { storage } from "../services/storage.js";
-import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand } from "../services/r2-client.js";
 export function register(app: express.Express) {
   app.post(
     "/api/v1/customer-link/:token/privacy",

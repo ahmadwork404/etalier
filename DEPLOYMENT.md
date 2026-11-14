@@ -1,41 +1,56 @@
-# Etalier domains and deployment
+# Etalier deployment
 
-Create two Vercel projects from this repository:
+The platform runs as three Cloudflare Workers in this npm monorepo.
 
-| Project | Root directory | Domain | Environment |
-| --- | --- | --- | --- |
-| Landing | `etalier-landing` | `etalier.app` | `NEXT_PUBLIC_APP_URL=https://portal.etalier.app`, `NEXT_PUBLIC_SITE_URL=https://etalier.app`, `BACKEND_API_URL=<HTTPS backend origin>` |
-| CRM | `atelier-platform/apps/web` | `portal.etalier.app` | `API_INTERNAL_URL=<HTTPS backend origin>` |
+| Application | URL | Source |
+| --- | --- | --- |
+| Landing and contact | https://etalier.app | `etalier-landing` |
+| CRM and platform admin | https://portal.etalier.app | `atelier-platform/apps/web` |
+| API health | https://etalier-api.etalier-ahmadwork404.workers.dev/api/v1/health | `atelier-platform/apps/api` |
 
-Both projects use the Next.js preset and normal Next.js output. Enable access to files outside each project's root directory so Vercel can install the npm workspaces using the repository-root `package-lock.json`. Set Node.js 22 and use `npm ci` from the repository root for installation. Build the landing with `npm run build --workspace etalier-landing` and the portal with `npm run build --workspace @atelier/web` from the repository root (or each project's normal `npm run build` with its Vercel root selected). Rebuild the CRM after changing `API_INTERNAL_URL`, because its API rewrite is resolved at build time.
+The frontend Workers use vinext and Workers Static Assets. Their server routes call the API through a Cloudflare service binding. CRM cookies remain HTTP-only and scoped to the portal. The landing contact endpoint does not forward CRM cookies.
 
-The backend host has not been selected. Run the long-lived API and its background notification scheduler on a Node.js service, not as frontend serverless functions. It needs persistent PostgreSQL and the existing R2 configuration. Set `HOST=0.0.0.0` and the host's assigned `PORT`, run migrations before startup, then run `npm run start -w @atelier/api` after building. Preserve all database and storage secrets on the backend only.
+The Express API runs through Cloudflare's Node HTTP adapter. Supabase PostgreSQL connects through the `etalier-postgres` Hyperdrive binding, with query caching disabled and a restricted `etalier_app` runtime role. Tenant transactions set PostgreSQL tenant context. Supabase public REST roles cannot access application tables. Supabase API keys are not database passwords or the app's authentication mechanism.
 
-Backend production environment:
+## Build and deploy
 
-```dotenv
-NODE_ENV=production
-PUBLIC_APP_URL=https://portal.etalier.app
-PUBLIC_SITE_URL=https://etalier.app
-WEB_ORIGIN=https://portal.etalier.app
-WEB_ORIGINS=https://etalier.app,https://portal.etalier.app
-RESEND_FROM=Etalier <notifications@etalier.app>
-LEAD_NOTIFICATION_TO=ahmadshaukat328@gmail.com
-RESEND_API_KEY=<domain-scoped sending key from the local backend environment>
+Use a current supported Node release. Cloudflare CLI requires at least 22.23, 24.22 or 26.12 in the corresponding release line.
+
+```bash
+npm ci
+npm test
+npm run build:cloudflare
+npm run typecheck
 ```
 
-Copy the local backend's Resend credential through your host's secret manager. Never put it in a `NEXT_PUBLIC_` variable or commit `.env`. Local development additionally allows the two localhost frontend ports; production does not automatically allow localhost or arbitrary Vercel preview domains. Add a specific trusted preview origin to both the backend `WEB_ORIGINS` and landing `SITE_ORIGIN` only if required.
+Worker builds generate ignored binding types under each application's `.cloudflare/types` directory. CI builds before typechecking for that reason. Standard local Node/Next development remains available through the root `dev:*` scripts.
 
-CRM requests go through the CRM's `/api` rewrite. Session cookies stay HTTP-only and scoped to the portal host; there is no shared landing-page session cookie. The landing `/api/contact` route forwards only the contact payload, not CRM cookies, to the backend. Both CORS and write-request origin checks allow the two production origins.
+Each app has a `cloudflare.config.ts`; shared non-secret settings are in `cloudflare/settings.mjs`. Frontend configurations declare the production domains so subsequent deployments preserve them. The backend permits both production origins.
 
-## Leads and email
+Supply `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` through the environment or ignored root `.env.cloudflare-deploy`. This project uses the `cf` CLI.
 
-The public contact page is `/contact`. Enquiries are saved in `contact_leads`, and only platform super administrators can access `/admin/leads`. Owners of individual salons cannot access this inbox. Each enquiry has a follow-up status, private notes and notification delivery state. Notification emails go to the fixed backend recipient; replying addresses the enquirer. A submitted form does not subscribe anyone to marketing or send an automatic email to an unverified address.
+```bash
+node scripts/cf.mjs api deploy --prebuilt
+node scripts/cf.mjs portal deploy --prebuilt
+node scripts/cf.mjs landing deploy --prebuilt
+```
 
-The API checks pending lead notifications every 30 seconds. Failed sends retry with backoff up to five attempts. Persistent failures remain visible and can be retried by an administrator. Do not run multiple API instances without shared PostgreSQL; database claims prevent simultaneous processing of the same lead. Submission UUIDs prevent duplicate enquiries on network retries.
+Configure declared Resend, R2 and Supabase secrets through Cloudflare's secret manager. The CLI also accepts `--secrets-file` pointing to an ignored JSON object. Never commit that file. The API's database connection comes from Hyperdrive; no privileged database password is deployed in its environment.
 
-React Email templates live in `apps/api/src/services/email-templates.tsx` and generate HTML plus a text alternative. They cover account verification, resets, team invitations, intake forms, invoices and lead notifications. Existing disabled marketing and engagement modules remain disabled. Setting up a sending address does not create a mailbox at that address.
+Local backend settings are in ignored `atelier-platform/apps/api/.env`; `.env.cloudflare` beside it contains production connection settings. Frontend `.env.local` files contain public settings. Production URLs are `NEXT_PUBLIC_APP_URL=https://portal.etalier.app` and `NEXT_PUBLIC_SITE_URL=https://etalier.app`. Service bindings replace `API_INTERNAL_URL` and `BACKEND_API_URL` in Workers; those variables remain available for local Node hosting.
 
-Six rendered reference templates are also published in Resend under the `etalier-` aliases (password reset uses `etalier-password-reset-v1`). The application renders the versioned local React templates directly; editing a dashboard reference does not change the application. Generate local HTML previews with `npx tsx apps/api/scripts/render-email-previews.ts` from the workspace root. The generated previews stay in ignored `.qa/email-previews`.
+## Database and jobs
 
-Before launch, set both backend origin variables in Vercel, apply database migrations, check a contact submission from the live domain and confirm the notification's delivery. DNS and frontend publication are not performed by these source changes.
+The initial 22 SQL migrations are applied. Run future migrations through a trusted direct database connection as the migration owner before deploying dependent code. `SUPABASE_SETUP.sql` is an initial setup reference with a password placeholder; do not rerun it against an initialized database. The temporary provisioning Worker has been removed.
+
+A per-minute scheduled trigger processes queued lead emails and payroll generation. Jobs use PostgreSQL claims, retries and persistent state. Native Node development retains its existing timers. Workers use Web Crypto PBKDF2 password hashes. Legacy native Argon2 accounts migrated from another database must use password reset.
+
+## Leads, email and uploads
+
+The landing `/contact` page saves enquiries to PostgreSQL. Platform administrators see them at `/admin/leads`; salon owners cannot access this inbox. Notifications go to the configured owner address, with the enquirer's address as Reply-To. Failed deliveries retry with backoff and remain visible to administrators.
+
+React Email templates in `atelier-platform/apps/api/src/services/email-templates.tsx` render HTML and plain text for verification, resets, invitations, intake forms, invoices and lead notifications. Published Resend templates are references; the application renders its versioned local templates. Password setup uses the single-use, 30-minute reset flow.
+
+R2 stores location and customer images. Browser uploads use short-lived signed URLs followed by server verification of size, MIME type and file signature. Bucket CORS permits the production portal and landing origins. Employee and service thumbnails use authenticated image endpoints.
+
+The labelled Maison Linden demo salon contains fictional European customers, employees, services, bookings and recorded sales. Demo customer emails use `example.test`; seeding sends them no messages. Photo credits and source links are retained in `atelier-platform/apps/api/scripts/europe-demo-plan.ts`.
