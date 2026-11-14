@@ -34,7 +34,7 @@ export function SiteHeader() {
             </div>
           </details>
           <a href="/about">About</a>
-          <a href="/blog">Journal</a>
+          <a href="/blogs">Journal</a>
           <a href="/pricing">Getting started</a>
         </nav>
         <div className="header-actions">
@@ -73,7 +73,7 @@ export function SiteFooter() {
         <nav aria-label="Company links">
           <strong>Etalier</strong>
           <a href="/about">About us</a>
-          <a href="/blog">The salon journal</a>
+          <a href="/blogs">The salon journal</a>
           <a href="/pricing">Getting started</a>
           <a href="/security">Security & data</a>
           <a href="/contact">Contact us</a>

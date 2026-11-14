@@ -6,7 +6,7 @@ export const metadata = pageMetadata({
   title: "Salon Management Guides & Advice | Etalier Journal",
   description:
     "Practical salon guides on bookings, cancellations, customer consultations, rebooking, cash reconciliation and payroll review.",
-  path: "/blog",
+  path: "/blogs",
 });
 export default function BlogPage() {
   const [lead, ...rest] = articles;
@@ -28,7 +28,7 @@ export default function BlogPage() {
           </p>
         </section>
         <section className="journal-content">
-          <a className="journal-feature" href={"/blog/" + lead.slug}>
+          <a className="journal-feature" href={"/blogs/" + lead.slug}>
             <div className="journal-art tone-peach">
               <div className="journal-paper">
                 <strong>Clear cancellation terms.</strong>
@@ -45,7 +45,11 @@ export default function BlogPage() {
           </a>
           <div className="journal-grid">
             {rest.map((a, i) => (
-              <a className="journal-card" key={a.slug} href={"/blog/" + a.slug}>
+              <a
+                className="journal-card"
+                key={a.slug}
+                href={"/blogs/" + a.slug}
+              >
                 <div className={"journal-card-art tone-" + a.tone}>
                   <strong>{a.category}</strong>
                   <Star />

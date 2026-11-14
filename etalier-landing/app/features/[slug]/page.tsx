@@ -92,7 +92,7 @@ export default async function FeaturePage({
           </div>
         </section>
         {article && (
-          <a className="related-feature-article" href={"/blog/" + article.slug}>
+          <a className="related-feature-article" href={"/blogs/" + article.slug}>
             <h3>{article.title}</h3>
             <p>{article.summary}</p>
             <span className="card-link">

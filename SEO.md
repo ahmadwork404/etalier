@@ -10,6 +10,8 @@ Implemented controls:
 - Permanent normalization of trailing slashes; unknown pages return 404.
 - CRM `noindex, nofollow` response headers and metadata, with crawler disallow rules. Preview website responses are noindex and its robots file disallows crawling.
 - Server-rendered article text, descriptive internal links, readable article navigation and responsive pages.
+- `/blogs` is the journal's canonical route. Old `/blog` URLs redirect permanently, preserving article paths and query parameters.
+- `/llm.txt` and `/llms.txt` provide the same public product overview and guide index. Articles and feature pages offer clean `index.md` versions with canonical headers; private CRM records are never included.
 
 ## Research and editorial plan
 

@@ -17,7 +17,7 @@ export async function generateMetadata({
     ? pageMetadata({
         title: a.title + " | Etalier Journal",
         description: a.summary,
-        path: "/blog/" + a.slug,
+        path: "/blogs/" + a.slug,
         type: "article",
       })
     : {};
@@ -39,13 +39,13 @@ export default async function ArticlePage({
           data={{
             "@context": "https://schema.org",
             "@type": "BlogPosting",
-            "@id": siteOrigin + "/blog/" + a.slug + "#article",
+            "@id": siteOrigin + "/blogs/" + a.slug + "#article",
             headline: a.title,
             description: a.summary,
-            url: siteOrigin + "/blog/" + a.slug,
+            url: siteOrigin + "/blogs/" + a.slug,
             mainEntityOfPage: {
               "@type": "WebPage",
-              "@id": siteOrigin + "/blog/" + a.slug,
+              "@id": siteOrigin + "/blogs/" + a.slug,
             },
             datePublished: published + "T00:00:00+05:00",
             dateModified: modified + "T00:00:00+05:00",
@@ -63,13 +63,13 @@ export default async function ArticlePage({
         <StructuredData
           data={breadcrumb([
             { name: "Home", path: "/" },
-            { name: "Journal", path: "/blog" },
-            { name: a.title, path: "/blog/" + a.slug },
+            { name: "Journal", path: "/blogs" },
+            { name: a.title, path: "/blogs/" + a.slug },
           ])}
         />
         <article>
           <header className="article-hero">
-            <a className="breadcrumb" href="/blog">
+            <a className="breadcrumb" href="/blogs">
               ← The salon journal
             </a>
 
@@ -156,7 +156,7 @@ export default async function ArticlePage({
               .filter((x) => x.slug !== a.slug)
               .slice(0, 2)
               .map((x) => (
-                <a key={x.slug} href={"/blog/" + x.slug}>
+                <a key={x.slug} href={"/blogs/" + x.slug}>
                   <h3>{x.title}</h3>
                   <span className="card-link">
                     Read the guide <Icon name="arrow" />

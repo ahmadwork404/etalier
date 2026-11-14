@@ -51,6 +51,7 @@ function ArrowLink({
 export default function Landing() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
     document.documentElement.classList.add("motion-ready");
     const observer = new IntersectionObserver(
       (entries) =>
@@ -70,8 +71,36 @@ export default function Landing() {
       document.documentElement.classList.remove("motion-ready");
     };
   }, []);
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const range = document.documentElement.scrollHeight - window.innerHeight;
+      document.documentElement.style.setProperty(
+        "--reading-progress",
+        String(
+          range > 0 ? Math.min(1, Math.max(0, window.scrollY / range)) : 0,
+        ),
+      );
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.cancelAnimationFrame(frame);
+      document.documentElement.style.removeProperty("--reading-progress");
+    };
+  }, []);
   return (
     <>
+      <div className="reading-progress" aria-hidden="true">
+        <span />
+      </div>
       <SiteHeader />
       <main id="main">
         <section className="hero">
