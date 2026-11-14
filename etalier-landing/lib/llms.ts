@@ -6,7 +6,7 @@ export function llmsText() {
 
 > Etalier is salon management software for bookings, walk-ins, customer records, team schedules and payroll records.
 
-The public website is https://etalier.app. The private CRM is https://portal.etalier.app and requires an authorised account. Do not treat the illustrative workspace, fictional customers or example amounts as customer results. Pricing and setup are discussed directly; there is no public self-service checkout. Payment recording does not initiate a card charge or a salary transfer.
+The public website is https://etalier.app. The private CRM is https://portal.etalier.app and requires an authorised account. Do not treat the illustrative workspace, fictional customers or example amounts as customer results. The offer is one month free, then US$10 per month. Trial access is arranged through the contact page; there is no public self-service checkout. Payment recording does not initiate a card charge or a salary transfer.
 
 ## Product
 

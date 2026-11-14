@@ -151,7 +151,7 @@ export default function Landing() {
           </div>
           <p className="hero-note">
             <Icon name="check" size={14} />
-            Built around the way salons work.
+            One month free. Then US$10/month.
           </p>
           <ProductPreview />
         </section>

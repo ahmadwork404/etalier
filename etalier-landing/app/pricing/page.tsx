@@ -2,9 +2,9 @@ import { pageMetadata } from "@/lib/seo";
 import { SiteHeader, SiteFooter, ContactCTA } from "@/components/SiteChrome";
 import { Icon } from "@/components/Icons";
 export const metadata = pageMetadata({
-  title: "Salon Software Pricing & Setup Enquiries | Etalier",
+  title: "Salon Software for US$10/month | One Month Free | Etalier",
   description:
-    "Discuss Etalier pricing, team size, locations and setup requirements. Request a product walkthrough for your salon.",
+    "Try Etalier salon management software free for one month, then continue for US$10 per month. Contact us to arrange trial access.",
   path: "/pricing",
 });
 export default function PricingPage() {
@@ -14,17 +14,16 @@ export default function PricingPage() {
       <main id="main">
         <section className="editorial-hero centered">
           <h1>
-            Start with the fit.
+            Your first month is free.
             <br />
-            <em>Then the setup.</em>
+            <em>Then US$10/month.</em>
           </h1>
           <p>
-            Tell us how your salon works. We’ll discuss the scope and pricing
-            directly, so you can decide with the relevant details in front of
-            you.
+            Try Etalier for one month, then continue for US$10 per month. Tell
+            us about your salon and we’ll arrange your trial access and setup.
           </p>
           <a className="button yellow" href="/contact">
-            Ask about your salon <Icon name="arrow" />
+            Start your free month <Icon name="arrow" />
           </a>
         </section>
         <section className="setup-grid editorial-section">
