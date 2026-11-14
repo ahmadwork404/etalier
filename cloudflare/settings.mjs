@@ -5,4 +5,4 @@ export const portalUrl="https://portal.etalier.app";
 export const siteUrl="https://etalier.app";
 export const hyperdriveId="fff5c9db555f408e89805cd61a0df272";
 export const observability={enabled:true,traces:{enabled:true}};
-export const apiVariables={NODE_ENV:"production",CLOUDFLARE_WORKER:"1",PUBLIC_APP_URL:portalUrl,PUBLIC_SITE_URL:siteUrl,WEB_ORIGIN:portalUrl,WEB_ORIGINS:[portalUrl,siteUrl,"https://etalier.app","https://portal.etalier.app"].join(","),LEAD_NOTIFICATION_TO:"ahmadshaukat328@gmail.com",RESEND_FROM:"Etalier <notifications@etalier.app>"};
+export const apiVariables={NODE_ENV:"production",CLOUDFLARE_WORKER:"1",PUBLIC_APP_URL:portalUrl,PUBLIC_SITE_URL:siteUrl,WEB_ORIGIN:portalUrl,WEB_ORIGINS:[portalUrl,siteUrl,"https://etalier-portal.etalier-ahmadwork404.workers.dev","https://etalier-landing.etalier-ahmadwork404.workers.dev"].join(","),LEAD_NOTIFICATION_TO:"ahmadshaukat328@gmail.com",RESEND_FROM:"Etalier <notifications@etalier.app>"};

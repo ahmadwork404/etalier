@@ -4,7 +4,7 @@ The platform runs as three Cloudflare Workers in this npm monorepo.
 
 | Application | URL | Source |
 | --- | --- | --- |
-| Landing and contact | https://etalier.app | `etalier-landing` |
+| Public website | https://etalier.app | `etalier-landing` |
 | CRM and platform admin | https://portal.etalier.app | `atelier-platform/apps/web` |
 | API health | https://etalier-api.etalier-ahmadwork404.workers.dev/api/v1/health | `atelier-platform/apps/api` |
 
@@ -54,3 +54,9 @@ React Email templates in `atelier-platform/apps/api/src/services/email-templates
 R2 stores location and customer images. Browser uploads use short-lived signed URLs followed by server verification of size, MIME type and file signature. Bucket CORS permits the production portal and landing origins. Employee and service thumbnails use authenticated image endpoints.
 
 The labelled Maison Linden demo salon contains fictional European customers, employees, services, bookings and recorded sales. Demo customer emails use `example.test`; seeding sends them no messages. Photo credits and source links are retained in `atelier-platform/apps/api/scripts/europe-demo-plan.ts`.
+
+## Custom-domain DNS fallback
+
+If a local resolver still caches a missing DNS entry, use https://etalier-landing.etalier-ahmadwork404.workers.dev for the website and https://etalier-portal.etalier-ahmadwork404.workers.dev for the CRM. Both workers.dev routes remain enabled alongside the custom domains. Their origins are explicitly allowed by the API and R2 CORS. The website uses the fallback CRM login link when opened on its workers.dev hostname.
+
+The website includes a product overview, four feature pages, About, a journal with four full guides, setup/pricing enquiries, security information, contact, sitemap and robots metadata. Article content is maintained in `etalier-landing/lib/journal.ts`.

@@ -3,6 +3,7 @@ export async function POST(request: Request) {
   const origin = request.headers.get("origin");
   const allowed = new Set([
     "https://etalier.app",
+    "https://etalier-landing.etalier-ahmadwork404.workers.dev",
     ...(process.env.NODE_ENV !== "production"
       ? ["http://localhost:3001", "http://127.0.0.1:3001"]
       : []),

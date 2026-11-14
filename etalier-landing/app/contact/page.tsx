@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Brand, Star } from "../../components/Icons";
+import { SiteHeader, SiteFooter } from "../../components/SiteChrome";
 import { ContactForm } from "../../components/ContactForm";
 export const metadata: Metadata = {
   title: "Contact us — Etalier",
@@ -12,19 +13,8 @@ export default function ContactPage() {
     process.env.NEXT_PUBLIC_APP_URL || "https://portal.etalier.app";
   return (
     <>
-      <a href="#contact" className="skip-link">
-        Skip to contact form
-      </a>
-      <header className="site-header">
-        <a className="brand-link" href="/" aria-label="Etalier home">
-          <Brand />
-        </a>
-        <nav className="contact-nav" aria-label="Main navigation">
-          <a href="/#product">The product</a>
-          <a href={portal + "/login"}>Sign in ↗</a>
-        </nav>
-      </header>
-      <main id="contact" className="contact-layout">
+      <SiteHeader />
+      <main id="main" className="contact-layout">
         <section className="contact-intro">
           <span className="eyebrow">LET’S TALK SALON.</span>
           <h1>
@@ -57,11 +47,7 @@ export default function ContactPage() {
           <ContactForm />
         </section>
       </main>
-      <footer className="contact-footer">
-        <Brand />
-        <span>© {new Date().getFullYear()} Etalier.</span>
-        <a href={portal + "/login"}>Already with us? Open your workspace ↗</a>
-      </footer>
+      <SiteFooter />
     </>
   );
 }

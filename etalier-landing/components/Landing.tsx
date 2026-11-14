@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Brand, Icon, Star } from "./Icons";
 import { ProductPreview } from "./ProductPreview";
+import { SiteHeader, SiteFooter } from "./SiteChrome";
 const app = (
   process.env.NEXT_PUBLIC_APP_URL || "https://portal.etalier.app"
 ).replace(/\/$/, "");
@@ -48,7 +49,6 @@ function ArrowLink({
   );
 }
 export default function Landing() {
-  const [menu, setMenu] = useState(false);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     document.documentElement.classList.add("motion-ready");
@@ -72,48 +72,7 @@ export default function Landing() {
   }, []);
   return (
     <>
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <header className="site-header">
-        <a className="brand-link" href="#" aria-label="Etalier home">
-          <Brand />
-        </a>
-        <nav
-          aria-label="Main navigation"
-          className={menu ? "main-nav open" : "main-nav"}
-        >
-          <a href="#product" onClick={() => setMenu(false)}>
-            The product
-            <Icon name="chevron" size={14} />
-          </a>
-          <a href="#your-day" onClick={() => setMenu(false)}>
-            Your day, in sync
-          </a>
-          <a href="#for-you" onClick={() => setMenu(false)}>
-            For your salon
-          </a>
-          <a href="#questions" onClick={() => setMenu(false)}>
-            Questions?
-          </a>
-          <a href="/contact">Contact us</a>
-        </nav>
-        <div className="header-actions">
-          <a className="sign-in" href={app + "/login"}>
-            Log in
-            <Icon name="arrow" size={16} />
-          </a>
-          <ArrowLink className="button small yellow">Get started</ArrowLink>
-          <button
-            className="menu-toggle"
-            aria-expanded={menu}
-            aria-label={menu ? "Close menu" : "Open menu"}
-            onClick={() => setMenu(!menu)}
-          >
-            <Icon name={menu ? "close" : "menu"} />
-          </button>
-        </div>
-      </header>
+      <SiteHeader />
       <main id="main">
         <section className="hero">
           <div className="hero-label">
@@ -575,35 +534,7 @@ export default function Landing() {
           </span>
         </section>
       </main>
-      <footer className="site-footer">
-        <div className="footer-top">
-          <a href="#" aria-label="Etalier home">
-            <Brand />
-          </a>
-          <p>
-            A little more together.
-            <br />A lot more possibility.
-          </p>
-          <nav aria-label="Footer navigation">
-            <a href="#product">The product</a>
-            <a href="#for-you">For your salon</a>
-            <a href="#questions">FAQs</a>
-            <a href="/contact">Contact us</a>
-            <a href={app + "/login"}>
-              Open Etalier
-              <Icon name="arrow" size={16} />
-            </a>
-          </nav>
-        </div>
-        <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Etalier.</span>
-          <span>
-            Made around your craft.
-            <Star />
-          </span>
-          <a href="#main">Back to the good stuff ↑</a>
-        </div>
-      </footer>
+      <SiteFooter />
     </>
   );
 }
